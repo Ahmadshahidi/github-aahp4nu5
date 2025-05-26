@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { api } from '../lib/api';
 
 interface AuthContextType {
   user: User | null;
@@ -28,22 +27,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if we have a session in localStorage
-    const session = localStorage.getItem('session');
-    if (session) {
-      setUser(JSON.parse(session));
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
       setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  }, [navigate]);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { session } = await api.auth.signIn(email, password);
-      setUser(session.user);
-      localStorage.setItem('session', JSON.stringify(session.user));
-      navigate('/profile');
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email,
+        password 
+      });
+      if (error) throw error;
     } catch (error) {
       throw error;
     }
@@ -51,16 +55,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (username: string, email: string, password: string) => {
     try {
-      await api.auth.signUp(username, email, password);
+      const { error } = await supabase.auth.signUp({ 
+        email,
+        password,
+        options: {
+          data: { username }
+        }
+      });
+      if (error) throw error;
     } catch (error) {
       throw error;
     }
   };
 
   const signOut = async () => {
-    localStorage.removeItem('session');
-    setUser(null);
-    navigate('/');
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
   return (

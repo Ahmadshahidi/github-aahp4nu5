@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../lib/api';
 import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 
 interface AuthContextType {
   user: User | null;
@@ -28,27 +28,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+    // Check if we have a session in localStorage
+    const session = localStorage.getItem('session');
+    if (session) {
+      setUser(JSON.parse(session));
       setLoading(false);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        navigate('/profile');
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    } else {
+      setLoading(false);
+    }
   }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
     try {
-      const data = await api.auth.signIn(email, password);
-      setUser(data.user);
+      const { session } = await api.auth.signIn(email, password);
+      setUser(session.user);
+      localStorage.setItem('session', JSON.stringify(session.user));
+      navigate('/profile');
     } catch (error) {
       throw error;
     }
@@ -63,8 +58,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    localStorage.removeItem('session');
+    setUser(null);
+    navigate('/');
   };
 
   return (

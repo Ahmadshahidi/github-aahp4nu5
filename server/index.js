@@ -42,13 +42,13 @@ app.post('/api/auth/signin', async (req, res) => {
   const { email, password } = req.body;
   
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data: { session }, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
     if (error) throw error;
-    res.json(data);
+    res.json({ session });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

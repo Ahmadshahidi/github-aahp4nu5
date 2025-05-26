@@ -142,3 +142,5 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     </form>
   );
 };
+
+export default ProfileForm

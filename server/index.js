@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
+import { checkPermission } from './middleware/checkPermission.js';
+import { ACTIONS, RESOURCES } from './permissions/roles.js';
+import { mockUsers } from './users/mockUsers.js';
 
 dotenv.config();
 
@@ -116,6 +119,37 @@ app.get('/api/profile/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+});
+
+// RBAC protected routes
+app.get('/api/public', (req, res) => {
+  res.json({ message: 'Public content accessible to all' });
+});
+
+app.get('/api/premium', 
+  checkPermission(ACTIONS.READ, RESOURCES.PREMIUM),
+  (req, res) => {
+    res.json({ message: 'Premium content for paid or active users' });
+  }
+);
+
+app.post('/api/premium',
+  checkPermission(ACTIONS.WRITE, RESOURCES.PREMIUM),
+  (req, res) => {
+    res.json({ message: 'Successfully created premium content' });
+  }
+);
+
+app.get('/api/dashboard',
+  checkPermission(ACTIONS.READ, RESOURCES.DASHBOARD),
+  (req, res) => {
+    res.json({ message: 'Dashboard access granted' });
+  }
+);
+
+// Mock user endpoint for testing
+app.get('/api/mock-users', (req, res) => {
+  res.json(mockUsers);
 });
 
 app.listen(port, () => {

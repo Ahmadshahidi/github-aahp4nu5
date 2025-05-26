@@ -16,6 +16,7 @@ export const api = {
       const response = await fetch(`${API_URL}/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
       if (!response.ok) throw new Error('Sign in failed');

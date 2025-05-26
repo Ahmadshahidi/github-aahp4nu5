@@ -8,13 +8,18 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 // Initialize Supabase client
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,
   process.env.VITE_SUPABASE_ANON_KEY
 );
 
-app.use(cors());
 app.use(express.json());
 
 // Auth endpoints

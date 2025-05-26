@@ -60,3 +60,5 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
     </div>
   );
 };
+
+export default AvatarUpload

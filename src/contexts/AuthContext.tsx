@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 
 interface AuthContextType {
   user: User | null;
@@ -46,13 +46,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ 
-        email,
-        password 
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
+      const data = await api.auth.signIn(email, password);
+      setUser(data.user);
     } catch (error) {
       throw error;
     }
@@ -60,17 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (username: string, email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signUp({ 
-        email,
-        password,
-        options: {
-          data: { username },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
+      await api.auth.signUp(username, email, password);
     } catch (error) {
       throw error;
     }

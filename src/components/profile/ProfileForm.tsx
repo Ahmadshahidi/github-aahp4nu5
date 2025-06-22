@@ -1,20 +1,17 @@
 import React from 'react';
 import { Profile } from '../../models/profile';
 import Button from '../ui/Button';
-import AvatarUpload from './AvatarUpload';
 
 interface ProfileFormProps {
   profile: Profile;
   loading: boolean;
   onUpdate: (updates: Partial<Profile>) => Promise<{ error: string | null }>;
-  onAvatarUpload: (file: File) => Promise<{ publicUrl: string | null; error: string | null }>;
 }
 
 const ProfileForm: React.FC<ProfileFormProps> = ({
   profile,
   loading,
-  onUpdate,
-  onAvatarUpload
+  onUpdate
 }) => {
   const [formData, setFormData] = React.useState({
     full_name: profile.full_name || '',
@@ -45,11 +42,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <AvatarUpload
-        currentAvatarUrl={profile.avatar_url}
-        onUpload={onAvatarUpload}
-      />
-
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">

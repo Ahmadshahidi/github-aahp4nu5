@@ -12,6 +12,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Prevent any form submission
+    event.preventDefault();
+    event.stopPropagation();
+    
     try {
       setUploading(true);
       
@@ -83,6 +87,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
       </div>
       <Button
         variant="outline"
+        type="button"
         onClick={() => fileInputRef.current?.click()}
         disabled={uploading}
       >

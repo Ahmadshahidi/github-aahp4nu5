@@ -1,6 +1,7 @@
 import React from 'react';
 import Card, { CardContent } from '../components/ui/Card';
 import ProfileForm from '../components/profile/ProfileForm';
+import AvatarUpload from '../components/profile/AvatarUpload';
 import { useProfile } from '../hooks/useProfile';
 
 const Profile: React.FC = () => {
@@ -31,12 +32,29 @@ const Profile: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             Edit Profile
           </h1>
-          <ProfileForm
-            profile={profile}
-            loading={loading}
-            onUpdate={updateProfile}
-            onAvatarUpload={uploadAvatar}
-          />
+          
+          {/* Avatar Upload Section - Separate from form */}
+          <div className="mb-8 pb-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              Profile Picture
+            </h2>
+            <AvatarUpload
+              currentAvatarUrl={profile.avatar_url}
+              onUpload={uploadAvatar}
+            />
+          </div>
+
+          {/* Profile Information Form */}
+          <div>
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+              Profile Information
+            </h2>
+            <ProfileForm
+              profile={profile}
+              loading={loading}
+              onUpdate={updateProfile}
+            />
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -53,7 +53,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
   return (
     <div className="flex flex-col items-center space-y-4">
       <div className="relative w-32 h-32">
-        {currentAvatarUrl ? (
+        {currentAvatarUrl && currentAvatarUrl.length > 0 && currentAvatarUrl !== 'NULL' ? (
           <img
             src={currentAvatarUrl}
             alt="Avatar"

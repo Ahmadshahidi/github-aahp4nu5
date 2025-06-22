@@ -57,6 +57,10 @@ export const useProfile = () => {
         throw new Error('User not authenticated');
       }
 
+      console.log('User authenticated:', user.id);
+      console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+      console.log('File details:', { name: file.name, type: file.type, size: file.size });
+
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
@@ -68,11 +72,23 @@ export const useProfile = () => {
         throw new Error('File size must be less than 5MB');
       }
 
+      // Check if user session is valid
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !session) {
+        console.error('Session error:', sessionError);
+        throw new Error('Authentication session expired. Please sign in again.');
+      }
+      console.log('Session valid:', session.user.id);
+
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
 
       console.log('Uploading file to path:', filePath);
+
+      // Check if bucket exists and is accessible
+      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+      console.log('Available buckets:', buckets, 'Error:', bucketsError);
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')

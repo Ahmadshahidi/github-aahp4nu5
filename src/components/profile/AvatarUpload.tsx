@@ -53,7 +53,11 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
   return (
     <div className="flex flex-col items-center space-y-4">
       <div className="relative w-32 h-32">
-        {currentAvatarUrl && currentAvatarUrl.length > 0 && currentAvatarUrl !== 'NULL' ? (
+        {currentAvatarUrl && 
+         currentAvatarUrl.length > 0 && 
+         currentAvatarUrl.toLowerCase() !== 'null' && 
+         currentAvatarUrl !== 'NULL' &&
+         !currentAvatarUrl.match(/^\\x[0-9a-fA-F]+$/) ? (
           <img
             src={currentAvatarUrl}
             alt="Avatar"

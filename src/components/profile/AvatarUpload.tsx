@@ -14,14 +14,27 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true);
+      
       const file = event.target.files?.[0];
-      if (!file) return;
+      if (!file) {
+        setUploading(false);
+        return;
+      }
+
+      console.log('Selected file:', file.name, file.type, file.size);
 
       const result = await onUpload(file);
       if (result.error) {
         throw new Error(result.error);
+      } else {
+        console.log('Avatar uploaded successfully');
+        // Reset the file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       }
     } catch (error) {
+      console.error('Upload handler error:', error);
       alert(error instanceof Error ? error.message : 'Error uploading avatar');
     } finally {
       setUploading(false);
@@ -35,6 +48,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
           <img
             src={currentAvatarUrl}
             alt="Avatar"
+            disabled={uploading}
             className="w-full h-full rounded-full object-cover"
           />
         ) : (

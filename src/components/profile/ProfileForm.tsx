@@ -27,10 +27,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting profile update:', formData);
     const result = await onUpdate(formData);
     if (result.error) {
+      console.error('Profile update error:', result.error);
       alert(result.error);
     } else {
+      console.log('Profile updated successfully');
       alert('Profile updated successfully');
     }
   };

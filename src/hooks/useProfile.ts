@@ -53,22 +53,52 @@ export const useProfile = () => {
 
   const uploadAvatar = async (file: File) => {
     try {
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error('Please upload a valid image file (JPEG, PNG, GIF, or WebP)');
+      }
+
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('File size must be less than 5MB');
+      }
+
       const fileExt = file.name.split('.').pop();
-      const filePath = `${user!.id}/${Date.now()}.${fileExt}`;
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${user.id}/${fileName}`;
+
+      console.log('Uploading file to path:', filePath);
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+
+      console.log('File uploaded successfully');
 
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      await updateProfile({ avatar_url: publicUrl });
+      console.log('Public URL:', publicUrl);
+
+      const updateResult = await updateProfile({ avatar_url: publicUrl });
+      if (updateResult.error) {
+        throw new Error(updateResult.error);
+      }
+
       return { publicUrl, error: null };
     } catch (err) {
+      console.error('Avatar upload error:', err);
       return { publicUrl: null, error: err instanceof Error ? err.message : 'Failed to upload avatar' };
     }
   };

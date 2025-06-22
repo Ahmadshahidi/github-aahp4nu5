@@ -79,8 +79,16 @@ export const createAvatarsBucket = async () => {
   console.log('🔧 Attempting to create avatars bucket...');
   
   try {
-    // Note: This will only work if the user has admin privileges
-    // In most cases, buckets should be created via migrations
+    // First, check if bucket already exists
+    const { data: buckets } = await supabase.storage.listBuckets();
+    const existingBucket = buckets?.find(b => b.name === 'avatars');
+    
+    if (existingBucket) {
+      console.log('✅ Avatars bucket already exists');
+      return { success: true, error: null };
+    }
+
+    // Try to create the bucket
     const { data, error } = await supabase.storage.createBucket('avatars', {
       public: true,
       fileSizeLimit: 5242880, // 5MB
@@ -89,7 +97,10 @@ export const createAvatarsBucket = async () => {
     
     if (error) {
       console.error('❌ Failed to create bucket:', error);
-      return { success: false, error: error.message };
+      return { 
+        success: false, 
+        error: `${error.message}. Note: Bucket creation typically requires admin privileges or should be done via migrations.` 
+      };
     }
     
     console.log('✅ Bucket created successfully:', data);
@@ -98,7 +109,9 @@ export const createAvatarsBucket = async () => {
     console.error('❌ Bucket creation failed:', error);
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+      error: error instanceof Error ? 
+        `${error.message}. Bucket creation usually requires admin privileges.` : 
+        'Unknown error' 
     };
   }
 };

@@ -3,13 +3,14 @@ import { User, TestTube } from 'lucide-react';
 import Card, { CardContent } from '../components/ui/Card';
 import ProfileForm from '../components/profile/ProfileForm';
 import { useProfile } from '../hooks/useProfile';
-import { testSupabaseConnection, createAvatarsBucket } from '../utils/testSupabase';
+import { testSupabaseConnection, createAvatarsBucket, runAvatarsBucketMigration } from '../utils/testSupabase';
 import Button from '../components/ui/Button';
 
 const Profile: React.FC = () => {
   const { profile, loading, error, updateProfile, uploadAvatar } = useProfile();
   const [testResults, setTestResults] = useState<any>(null);
   const [creatingBucket, setCreatingBucket] = useState(false);
+  const [runningMigration, setRunningMigration] = useState(false);
 
   const runConnectionTest = async () => {
     console.log('Running Supabase connection test...');
@@ -29,6 +30,19 @@ const Profile: React.FC = () => {
     }
     setCreatingBucket(false);
   };
+
+  const handleRunMigration = async () => {
+    setRunningMigration(true);
+    const result = await runAvatarsBucketMigration();
+    if (result.success) {
+      alert('Migration completed! Run the connection test again to verify.');
+      await runConnectionTest();
+    } else {
+      alert(`Migration failed: ${result.error}`);
+    }
+    setRunningMigration(false);
+  };
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -65,14 +79,24 @@ const Profile: React.FC = () => {
                 Test Connection
               </Button>
               {testResults && !testResults.avatars && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleCreateBucket}
-                  disabled={creatingBucket}
-                >
-                  {creatingBucket ? 'Creating...' : 'Create Bucket'}
-                </Button>
+                <>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleCreateBucket}
+                    disabled={creatingBucket}
+                  >
+                    {creatingBucket ? 'Creating...' : 'Create Bucket'}
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleRunMigration}
+                    disabled={runningMigration}
+                  >
+                    {runningMigration ? 'Running...' : 'Run Migration'}
+                  </Button>
+                </>
               )}
             </div>
             {testResults && (

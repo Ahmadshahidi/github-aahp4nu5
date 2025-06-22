@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
                 <TestTube className="w-4 h-4 mr-2" />
                 Test Connection
               </Button>
-              {testResults && !testResults.avatarsBucket && (
+              {testResults && !testResults.avatars && (
                 <Button
                   variant="secondary"
                   size="sm"
@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
             {testResults && (
               <div className="mt-4 text-sm">
                <div className="mb-2">
-                 <strong>Status:</strong> {testResults.avatarsBucket ? '✅ Ready for uploads' : '❌ Avatars bucket missing'}
+                 <strong>Status:</strong> {testResults.avatars ? '✅ Ready for uploads' : '❌ Avatars bucket missing'}
                </div>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs overflow-auto">
                   {JSON.stringify(testResults, null, 2)}

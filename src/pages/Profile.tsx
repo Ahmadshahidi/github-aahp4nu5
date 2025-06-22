@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
             )}
             <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
               <strong>Note:</strong> If the avatars bucket is missing, the database migrations need to be run by an administrator. 
-              The "Create Bucket" button will only work if you have admin privileges.
+              The "Create Bucket\" button will only work if you have admin privileges.
             </div>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">

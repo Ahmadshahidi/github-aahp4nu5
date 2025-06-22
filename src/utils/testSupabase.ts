@@ -75,6 +75,7 @@ export const testSupabaseConnection = async () => {
     };
   }
 };
+
 export const createAvatarsBucket = async () => {
   console.log('🔧 Attempting to create avatars bucket...');
   
@@ -99,63 +100,6 @@ export const createAvatarsBucket = async () => {
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 
-    };
-  }
-};
-
-export const runAvatarsBucketMigration = async () => {
-  console.log('🔧 Running avatars bucket migration manually...');
-  
-  try {
-    // Execute the migration SQL directly
-    const migrationSQL = `
-      -- Create the avatars bucket if it doesn't exist
-      DO $$
-      BEGIN
-        -- Check if bucket exists
-        IF NOT EXISTS (
-          SELECT 1 FROM storage.buckets WHERE id = 'avatars'
-        ) THEN
-          -- Create the bucket
-          INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-          VALUES (
-            'avatars',
-            'avatars', 
-            true,
-            5242880,
-            ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-          );
-        ELSE
-          -- Update existing bucket configuration
-          UPDATE storage.buckets
-          SET 
-            public = true,
-            file_size_limit = 5242880,
-            allowed_mime_types = ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-          WHERE id = 'avatars';
-        END IF;
-      END $$;
-    `;
-
-    const { error } = await supabase.rpc('exec_sql', { sql: migrationSQL });
-    
-    if (error) {
-      console.error('❌ Migration failed:', error);
-      return { 
-        success: false, 
-        error: `Migration failed: ${error.message}. This requires database admin privileges.` 
-      };
-    }
-    
-    console.log('✅ Migration executed successfully');
-    return { success: true, error: null };
-  } catch (error) {
-    console.error('❌ Migration execution failed:', error);
-    return { 
-      success: false, 
-      error: error instanceof Error ? 
-        `Migration failed: ${error.message}. This requires database admin privileges.` : 
-        'Unknown migration error' 
     };
   }
 };

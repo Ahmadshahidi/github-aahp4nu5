@@ -3,12 +3,13 @@ import { User, TestTube } from 'lucide-react';
 import Card, { CardContent } from '../components/ui/Card';
 import ProfileForm from '../components/profile/ProfileForm';
 import { useProfile } from '../hooks/useProfile';
-import { testSupabaseConnection } from '../utils/testSupabase';
+import { testSupabaseConnection, createAvatarsBucket } from '../utils/testSupabase';
 import Button from '../components/ui/Button';
 
 const Profile: React.FC = () => {
   const { profile, loading, error, updateProfile, uploadAvatar } = useProfile();
   const [testResults, setTestResults] = useState<any>(null);
+  const [creatingBucket, setCreatingBucket] = useState(false);
 
   const runConnectionTest = async () => {
     console.log('Running Supabase connection test...');
@@ -16,6 +17,18 @@ const Profile: React.FC = () => {
     setTestResults(results);
   };
 
+  const handleCreateBucket = async () => {
+    setCreatingBucket(true);
+    const result = await createAvatarsBucket();
+    if (result.success) {
+      alert('Bucket created successfully! Run the connection test again to verify.');
+      // Re-run the test
+      await runConnectionTest();
+    } else {
+      alert(`Failed to create bucket: ${result.error}`);
+    }
+    setCreatingBucket(false);
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -42,16 +55,31 @@ const Profile: React.FC = () => {
             <h2 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
               Debug Tools
             </h2>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={runConnectionTest}
-            >
-              <TestTube className="w-4 h-4 mr-2" />
-              Test Supabase Connection
-            </Button>
+            <div className="flex gap-2 mb-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={runConnectionTest}
+              >
+                <TestTube className="w-4 h-4 mr-2" />
+                Test Connection
+              </Button>
+              {testResults && !testResults.avatarsBucket && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleCreateBucket}
+                  disabled={creatingBucket}
+                >
+                  {creatingBucket ? 'Creating...' : 'Create Bucket'}
+                </Button>
+              )}
+            </div>
             {testResults && (
               <div className="mt-4 text-sm">
+               <div className="mb-2">
+                 <strong>Status:</strong> {testResults.avatarsBucket ? '✅ Ready for uploads' : '❌ Avatars bucket missing'}
+               </div>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs overflow-auto">
                   {JSON.stringify(testResults, null, 2)}
                 </pre>

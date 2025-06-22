@@ -31,7 +31,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     if (result.error) {
       alert(result.error);
     } else {
-      alert('Profile updated successfully');
+      alert('Profile information updated successfully');
     }
   };
 

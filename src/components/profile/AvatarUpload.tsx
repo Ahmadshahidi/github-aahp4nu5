@@ -21,16 +21,21 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
         return;
       }
 
+      console.log('Starting avatar upload for file:', file.name);
+
       const result = await onUpload(file);
       if (result.error) {
         throw new Error(result.error);
       } else {
+        console.log('Avatar upload successful, new URL:', result.publicUrl);
+        alert('Avatar updated successfully!');
         // Reset the file input
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
       }
     } catch (error) {
+      console.error('Avatar upload error:', error);
       alert(error instanceof Error ? error.message : 'Error uploading avatar');
       // Reset the file input on error too
       if (fileInputRef.current) {

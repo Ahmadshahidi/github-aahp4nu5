@@ -78,31 +78,44 @@ export const useProfile = () => {
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `${user.id}/${fileName}`;
 
+      console.log('Uploading file to path:', filePath);
+
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
       if (uploadError) {
+        console.error('Upload error:', uploadError);
         throw uploadError;
       }
+
+      console.log('File uploaded successfully, getting public URL...');
 
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      // Add cache-busting parameter to ensure fresh image load
-      const cacheBustedUrl = `${publicUrl}?t=${Date.now()}`;
+      console.log('Public URL:', publicUrl);
 
-      const updateResult = await updateProfile({ avatar_url: cacheBustedUrl });
-      if (updateResult.error) {
-        throw new Error(updateResult.error);
+      // Update the profile with the new avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+
+      if (updateError) {
+        console.error('Profile update error:', updateError);
+        throw updateError;
       }
 
-      // Force refresh the profile data to ensure UI updates
-      await fetchProfile();
-      
-      return { publicUrl: cacheBustedUrl, error: null };
+      console.log('Profile updated with new avatar URL');
+
+      // Update local state
+      setProfile(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+
+      return { publicUrl, error: null };
     } catch (err) {
+      console.error('Avatar upload failed:', err);
       return { publicUrl: null, error: err instanceof Error ? err.message : 'Failed to upload avatar' };
     }
   };

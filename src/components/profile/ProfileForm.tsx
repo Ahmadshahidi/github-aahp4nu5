@@ -30,6 +30,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     const result = await onUpdate(formData);
     if (result.error) {
       alert(result.error);
+    } else {
+      alert('Profile updated successfully');
     }
   };
 

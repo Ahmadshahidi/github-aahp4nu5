@@ -49,9 +49,22 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
             src={currentAvatarUrl}
             alt="Avatar"
             className="w-full h-full rounded-full object-cover"
+            key={currentAvatarUrl} // Force re-render when URL changes
+            onError={(e) => {
+              console.error('Failed to load avatar image:', currentAvatarUrl);
+              // Fallback to placeholder on error
+              e.currentTarget.style.display = 'none';
+            }}
           />
         ) : (
           <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <Camera className="w-12 h-12 text-gray-400" />
+          </div>
+        )}
+        {currentAvatarUrl && (
+          <div className="absolute inset-0 w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+               style={{ display: 'none' }}
+               id="avatar-fallback">
             <Camera className="w-12 h-12 text-gray-400" />
           </div>
         )}
@@ -70,6 +83,11 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ currentAvatarUrl, onUpload 
       >
         {uploading ? 'Uploading...' : 'Change Avatar'}
       </Button>
+      {currentAvatarUrl && (
+        <p className="text-xs text-gray-500 dark:text-gray-400 text-center max-w-xs break-all">
+          Current: {currentAvatarUrl.split('/').pop()?.split('?')[0]}
+        </p>
+      )}
     </div>
   );
 };

@@ -90,12 +90,18 @@ export const useProfile = () => {
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const updateResult = await updateProfile({ avatar_url: publicUrl });
+      // Add cache-busting parameter to ensure fresh image load
+      const cacheBustedUrl = `${publicUrl}?t=${Date.now()}`;
+
+      const updateResult = await updateProfile({ avatar_url: cacheBustedUrl });
       if (updateResult.error) {
         throw new Error(updateResult.error);
       }
 
-      return { publicUrl, error: null };
+      // Force refresh the profile data to ensure UI updates
+      await fetchProfile();
+      
+      return { publicUrl: cacheBustedUrl, error: null };
     } catch (err) {
       return { publicUrl: null, error: err instanceof Error ? err.message : 'Failed to upload avatar' };
     }

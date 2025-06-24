@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Card, { CardContent } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProfileForm from '../components/profile/ProfileForm';
@@ -11,6 +12,16 @@ import { BookOpen, User } from 'lucide-react';
 const Profile: React.FC = () => {
   const { profile, loading, error, updateProfile, uploadAvatar } = useProfile();
   const [activeTab, setActiveTab] = useState<'profile' | 'courses'>('profile');
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check URL parameters to set the active tab
+    const urlParams = new URLSearchParams(location.search);
+    const tab = urlParams.get('tab');
+    if (tab === 'courses') {
+      setActiveTab('courses');
+    }
+  }, [location]);
 
   if (loading) {
     return (

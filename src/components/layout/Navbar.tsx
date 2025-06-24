@@ -101,7 +101,11 @@ const Navbar: React.FC = () => {
             </a>
             <div className="hidden md:ml-6 md:flex md:space-x-2">
               <NavLink href="/" icon={<LineChart size={18} />}>Home</NavLink>
-              <NavLink href="/courses" icon={<BookOpen size={18} />}>Courses</NavLink>
+              {user ? (
+                <NavLink href="/profile?tab=courses" icon={<BookOpen size={18} />}>My Courses</NavLink>
+              ) : (
+                <NavLink href="/courses" icon={<BookOpen size={18} />}>Courses</NavLink>
+              )}
               <Dropdown
                 label="Resources"
                 icon={<Database size={18} />}
@@ -170,7 +174,11 @@ const Navbar: React.FC = () => {
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="pt-2 pb-3 space-y-1">
           <NavLink href="/" icon={<LineChart size={18} />} onClick={closeMenu}>Home</NavLink>
-          <NavLink href="/courses" icon={<BookOpen size={18} />} onClick={closeMenu}>Courses</NavLink>
+          {user ? (
+            <NavLink href="/profile?tab=courses" icon={<BookOpen size={18} />} onClick={closeMenu}>My Courses</NavLink>
+          ) : (
+            <NavLink href="/courses" icon={<BookOpen size={18} />} onClick={closeMenu}>Courses</NavLink>
+          )}
           <NavLink href="/datasets" icon={<Database size={18} />} onClick={closeMenu}>Datasets</NavLink>
           <NavLink href="/useful-links" icon={<Link size={18} />} onClick={closeMenu}>Useful Links</NavLink>
           <NavLink href="/notebooks" icon={<Code size={18} />} onClick={closeMenu}>Notebooks</NavLink>

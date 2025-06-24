@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpen, Calendar, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Card, { CardContent } from '../ui/Card';
 import Button from '../ui/Button';
 import { supabase } from '../../lib/supabase';
@@ -16,6 +17,7 @@ const MyCourses: React.FC = () => {
   const [courses, setCourses] = useState<UserCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserCourses();
@@ -76,7 +78,7 @@ const MyCourses: React.FC = () => {
         </p>
         <Button 
           variant="primary"
-          onClick={() => window.location.href = '/courses'}
+          onClick={() => navigate('/courses')}
         >
           Browse Courses
         </Button>
@@ -92,7 +94,7 @@ const MyCourses: React.FC = () => {
         </h2>
         <Button 
           variant="outline"
-          onClick={() => window.location.href = '/courses'}
+          onClick={() => navigate('/courses')}
         >
           Browse More Courses
         </Button>

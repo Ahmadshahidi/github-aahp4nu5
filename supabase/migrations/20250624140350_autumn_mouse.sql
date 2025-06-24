@@ -28,6 +28,23 @@
   3. Indexes
     - Index on user_courses.user_id for performance
     - Index on user_courses.course_id for performance
+
+Helper Functions:
+
+user_has_course_access(): Check if a user has purchased a specific course
+get_user_courses(): Retrieve all courses purchased by the authenticated user
+
+Usage Examples
+-- Check if user has access to a course
+SELECT public.user_has_course_access('course-uuid-here');
+
+-- Get all courses purchased by the current user
+SELECT * FROM public.get_user_courses();
+
+-- Purchase a course (insert into user_courses)
+INSERT INTO public.user_courses (user_id, course_id) 
+VALUES (auth.uid(), 'course-uuid-here');
+
 */
 
 -- Create courses table

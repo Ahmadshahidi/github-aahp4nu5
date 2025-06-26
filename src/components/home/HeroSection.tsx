@@ -104,31 +104,6 @@ const HeroSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
               </div>
 
-              {/* Floating cards */}
-              <div className="absolute -top-6 -left-6 bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 shadow-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">Statistical Models</div>
-                    <div className="text-gray-300 text-xs">Advanced Analytics</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute -bottom-6 -right-6 bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 shadow-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                    <Brain className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">AI Integration</div>
-                    <div className="text-gray-300 text-xs">Machine Learning</div>
-                  </div>
-                </div>
-              </div>
-
               {/* Background decoration */}
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl transform scale-110"></div>
             </div>

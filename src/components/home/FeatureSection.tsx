@@ -1,6 +1,6 @@
 import React from 'react';
 import Card, { CardContent, CardHeader } from '../ui/Card';
-import { LineChart, Database, GraduationCap, Brain, Target, Users, Zap, Award, TrendingUp } from 'lucide-react';
+import { LineChart, Database, GraduationCap, Brain, Target, Users, Zap, Award, TrendingUp, MessageSquare, Sparkles } from 'lucide-react';
 
 interface FeatureCardProps {
   title: string;
@@ -43,6 +43,18 @@ const FeatureSection: React.FC = () => {
       description: "Dive deep into ML algorithms, neural networks, and AI systems. Learn the mathematical foundations and practical implementations that power modern data science.",
       icon: <Brain size={28} />,
       gradient: "bg-gradient-to-br from-purple-500 to-purple-600"
+    },
+    {
+      title: "LLM Models",
+      description: "Master Large Language Models and transformer architectures. Understand the statistical principles behind GPT, BERT, and other state-of-the-art language models.",
+      icon: <MessageSquare size={28} />,
+      gradient: "bg-gradient-to-br from-cyan-500 to-cyan-600"
+    },
+    {
+      title: "Generative AI",
+      description: "Explore generative artificial intelligence techniques including GANs, VAEs, and diffusion models. Learn to create and fine-tune AI systems that generate content.",
+      icon: <Sparkles size={28} />,
+      gradient: "bg-gradient-to-br from-pink-500 to-pink-600"
     },
     {
       title: "Data Analysis",

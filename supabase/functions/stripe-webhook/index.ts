@@ -98,6 +98,7 @@ async function handleEvent(event: Stripe.Event) {
           amount_subtotal,
           amount_total,
           currency,
+          metadata,
         } = stripeData as Stripe.Checkout.Session;
 
         // Insert the order into the stripe_orders table
@@ -116,6 +117,42 @@ async function handleEvent(event: Stripe.Event) {
           console.error('Error inserting order:', orderError);
           return;
         }
+        
+        // If this was a course purchase, enroll the user
+        if (metadata?.course_id) {
+          try {
+            // Get the user_id from the customer
+            const { data: customer, error: customerError } = await supabase
+              .from('stripe_customers')
+              .select('user_id')
+              .eq('customer_id', customerId)
+              .single();
+
+            if (customerError || !customer) {
+              console.error('Error finding customer:', customerError);
+              return;
+            }
+
+            // Enroll user in the course
+            const { data: enrollmentResult, error: enrollmentError } = await supabase
+              .rpc('enroll_user_in_course', {
+                p_user_id: customer.user_id,
+                p_course_id: metadata.course_id,
+                p_stripe_session_id: checkout_session_id,
+                p_stripe_payment_intent_id: payment_intent,
+                p_amount_paid: amount_total ? amount_total / 100 : null // Convert from cents
+              });
+
+            if (enrollmentError) {
+              console.error('Error enrolling user in course:', enrollmentError);
+            } else {
+              console.info(`Successfully enrolled user in course: ${metadata.course_id}`);
+            }
+          } catch (courseError) {
+            console.error('Error processing course enrollment:', courseError);
+          }
+        }
+        
         console.info(`Successfully processed one-time payment for session: ${checkout_session_id}`);
       } catch (error) {
         console.error('Error processing one-time payment:', error);

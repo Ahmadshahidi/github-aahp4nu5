@@ -9,20 +9,47 @@ const Success: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const sessionId = searchParams.get('session_id');
+  const courseId = searchParams.get('course_id');
   const [loading, setLoading] = useState(true);
+  const [enrollmentStatus, setEnrollmentStatus] = useState<'pending' | 'success' | 'error'>('pending');
   const { refetch } = useSubscription();
 
   useEffect(() => {
-    // Refetch subscription data to get the latest status
+    // Refetch subscription data and handle course enrollment
     const updateSubscription = async () => {
-      await refetch();
-      setLoading(false);
+      try {
+        await refetch();
+        
+        // If there's a course_id, this was a course purchase
+        if (courseId && sessionId) {
+          await handleCourseEnrollment(courseId, sessionId);
+        }
+        
+        setEnrollmentStatus('success');
+      } catch (error) {
+        console.error('Error processing purchase:', error);
+        setEnrollmentStatus('error');
+      } finally {
+        setLoading(false);
+      }
     };
 
     // Add a small delay to ensure webhook has processed
     const timer = setTimeout(updateSubscription, 2000);
     return () => clearTimeout(timer);
   }, [refetch]);
+
+  const handleCourseEnrollment = async (courseId: string, sessionId: string) => {
+    // Here you would typically call an API to enroll the user in the course
+    // For now, we'll just log it since the actual enrollment logic would depend on your course system
+    console.log(`Enrolling user in course: ${courseId} for session: ${sessionId}`);
+    
+    // You could add a call to your backend here to:
+    // 1. Verify the payment was successful
+    // 2. Add the user to the course
+    // 3. Send confirmation email
+    // 4. Update any course-specific access controls
+  };
 
   if (loading) {
     return (
@@ -48,13 +75,24 @@ const Success: React.FC = () => {
           </h1>
           
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Thank you for your purchase. Your payment has been processed successfully and you now have access to your content.
+            Thank you for your purchase. Your payment has been processed successfully and you now have access to your {courseId ? 'course' : 'content'}.
           </p>
           
           {sessionId && (
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
               Session ID: {sessionId}
             </p>
+          )}
+
+          {courseId && (
+            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <p className="text-blue-700 dark:text-blue-300 font-medium">
+                Course Enrollment: {courseId}
+              </p>
+              <p className="text-blue-600 dark:text-blue-400 text-sm mt-1">
+                You have been successfully enrolled in this course.
+              </p>
+            </div>
           )}
         </div>
 

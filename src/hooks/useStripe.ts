@@ -5,6 +5,7 @@ import { STRIPE_PRODUCTS, type ProductKey } from '../stripe-config';
 interface CheckoutOptions {
   successUrl?: string;
   cancelUrl?: string;
+  metadata?: Record<string, string>;
 }
 
 export const useStripe = () => {
@@ -42,6 +43,7 @@ export const useStripe = () => {
             mode: product.mode,
             success_url: options.successUrl || defaultSuccessUrl,
             cancel_url: options.cancelUrl || defaultCancelUrl,
+            metadata: options.metadata,
           }),
         }
       );

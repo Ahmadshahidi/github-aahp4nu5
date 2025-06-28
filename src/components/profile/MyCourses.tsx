@@ -32,6 +32,7 @@ const MyCourses: React.FC = () => {
   useEffect(() => {
     fetchUserResources();
     fetchGlobalAccess();
+    fetchUserCourses();
   }, []);
 
   const fetchUserResources = async () => {
@@ -70,6 +71,23 @@ const MyCourses: React.FC = () => {
     } catch (err) {
       console.error('Error fetching global access:', err);
       // Don't set error state for global access as it's optional
+    }
+  };
+
+  const fetchUserCourses = async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_user_accessible_courses', {
+        p_user_id: (await supabase.auth.getUser()).data.user?.id
+      });
+
+      if (error) {
+        console.error('Error fetching user courses:', error);
+      } else {
+        console.log('User courses:', data);
+        // You can add state to display these courses separately if needed
+      }
+    } catch (err) {
+      console.error('Error fetching user courses:', err);
     }
   };
 

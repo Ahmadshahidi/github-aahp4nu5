@@ -2,6 +2,9 @@ import React from 'react';
 import { GraduationCap, Clock, Star, Users, BookOpen, Award, TrendingUp, Target } from 'lucide-react';
 import Card, { CardContent } from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import { useStripe } from '../hooks/useStripe';
+import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../hooks/useSubscription';
 
 interface CourseCardProps {
   title: string;
@@ -14,6 +17,7 @@ interface CourseCardProps {
   price: string;
   instructor: string;
   skills: string[];
+  courseId: string;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
@@ -27,7 +31,32 @@ const CourseCard: React.FC<CourseCardProps> = ({
   price,
   instructor,
   skills,
+  courseId,
 }) => {
+  const { createCheckoutSession, loading } = useStripe();
+  const { user } = useAuth();
+  const { hasActiveSubscription } = useSubscription();
+
+  const handleEnrollClick = () => {
+    if (!user) {
+      alert('Please sign in to enroll in courses');
+      return;
+    }
+
+    // If user has active subscription, they can access all courses
+    if (hasActiveSubscription()) {
+      // Redirect to course content or show access granted message
+      alert('You already have access to all courses with your membership!');
+      return;
+    }
+
+    // Create checkout session for individual course purchase
+    createCheckoutSession('course', {
+      successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}&course_id=${courseId}`,
+      cancelUrl: `${window.location.origin}/courses`
+    });
+  };
+
   const getLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
       case 'beginner': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -104,9 +133,13 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <Button
           variant="primary"
           fullWidth
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          onClick={handleEnrollClick}
+          disabled={loading}
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Enroll Now
+          {loading ? 'Processing...' : 
+           user && hasActiveSubscription() ? 'Access Course' : 
+           user ? 'Enroll Now' : 'Sign In to Enroll'}
         </Button>
       </CardContent>
     </Card>
@@ -116,6 +149,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 const Courses: React.FC = () => {
   const courses = [
     {
+      courseId: 'course-statistical-inference',
       title: "Statistical Inference Fundamentals",
       description: "Master the core concepts of statistical inference, hypothesis testing, and confidence intervals with real-world applications.",
       duration: "8 weeks",
@@ -128,6 +162,7 @@ const Courses: React.FC = () => {
       skills: ["Hypothesis Testing", "Confidence Intervals", "P-values", "Statistical Power", "ANOVA"]
     },
     {
+      courseId: 'course-machine-learning-stats',
       title: "Machine Learning Statistics",
       description: "Learn the statistical foundations behind modern machine learning algorithms and how to apply them effectively.",
       duration: "10 weeks",
@@ -140,6 +175,7 @@ const Courses: React.FC = () => {
       skills: ["Regression", "Classification", "Cross-validation", "Feature Selection", "Model Evaluation"]
     },
     {
+      courseId: 'course-bayesian-analysis',
       title: "Bayesian Data Analysis",
       description: "Explore Bayesian statistics and its applications in real-world data analysis and decision making.",
       duration: "6 weeks",
@@ -152,6 +188,7 @@ const Courses: React.FC = () => {
       skills: ["Bayesian Inference", "MCMC", "Prior Distributions", "Posterior Analysis", "Hierarchical Models"]
     },
     {
+      courseId: 'course-time-series',
       title: "Time Series Analysis",
       description: "Master time series forecasting techniques and learn to analyze temporal data patterns effectively.",
       duration: "7 weeks",
@@ -164,6 +201,7 @@ const Courses: React.FC = () => {
       skills: ["ARIMA", "Seasonal Decomposition", "Forecasting", "Trend Analysis", "Stationarity"]
     },
     {
+      courseId: 'course-experimental-design',
       title: "Experimental Design",
       description: "Learn to design robust experiments and analyze experimental data with statistical rigor.",
       duration: "5 weeks",
@@ -176,6 +214,7 @@ const Courses: React.FC = () => {
       skills: ["A/B Testing", "Randomization", "Control Groups", "Sample Size", "Effect Size"]
     },
     {
+      courseId: 'course-deep-learning-math',
       title: "Deep Learning Mathematics",
       description: "Understand the mathematical foundations of deep learning and neural network architectures.",
       duration: "12 weeks",

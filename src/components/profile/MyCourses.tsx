@@ -60,7 +60,7 @@ const MyCourses: React.FC = () => {
         .from('global_access_purchases')
         .select('*')
         .eq('is_active', true)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
         throw error;

@@ -35,7 +35,7 @@ export const useSubscription = () => {
       setError(null);
 
       const { data, error: fetchError } = await supabase
-        .from('stripe_user_subscriptions')
+        .from('stripe_subscriptions')
         .select('*')
         .maybeSingle();
 

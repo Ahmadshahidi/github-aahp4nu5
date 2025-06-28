@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GraduationCap, Clock, Star, Users, BookOpen, Award, TrendingUp, Target } from 'lucide-react';
 import Card, { CardContent } from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -6,7 +6,6 @@ import { useStripe } from '../hooks/useStripe';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../hooks/useSubscription';
 import AuthForm from '../components/auth/AuthForm';
-import Card from '../components/ui/Card';
 import { X } from 'lucide-react';
 
 interface CourseCardProps {

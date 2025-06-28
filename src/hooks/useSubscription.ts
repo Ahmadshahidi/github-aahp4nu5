@@ -35,11 +35,11 @@ export const useSubscription = () => {
       setError(null);
 
       const { data, error: fetchError } = await supabase
-        .from('stripe_subscriptions')
+        .from('stripe_user_subscriptions')
         .select(`
           customer_id,
           subscription_id,
-          status,
+          subscription_status,
           price_id,
           current_period_start,
           current_period_end,
@@ -63,7 +63,7 @@ export const useSubscription = () => {
   };
 
   const hasActiveSubscription = () => {
-    return subscription?.status === 'active';
+    return subscription?.subscription_status === 'active';
   };
 
   const getSubscriptionPlan = () => {

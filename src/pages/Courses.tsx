@@ -20,6 +20,8 @@ interface CourseCardProps {
   instructor: string;
   skills: string[];
   courseId: string;
+  setAuthMode: (mode: 'signin' | 'signup') => void;
+  setShowAuthModal: (show: boolean) => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
@@ -34,6 +36,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
   instructor,
   skills,
   courseId,
+  setAuthMode,
+  setShowAuthModal,
 }) => {
   const { createCheckoutSession, loading } = useStripe();
   const { user } = useAuth();
@@ -301,7 +305,12 @@ const Courses: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course, index) => (
-            <CourseCard key={index} {...course} />
+            <CourseCard 
+              key={index} 
+              {...course} 
+              setAuthMode={setAuthMode}
+              setShowAuthModal={setShowAuthModal}
+            />
           ))}
         </div>
 

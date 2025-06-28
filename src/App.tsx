@@ -10,6 +10,8 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import Profile from './pages/Profile';
 import Courses from './pages/Courses';
 import Home from './pages/Home';
+import Pricing from './pages/Pricing';
+import Success from './pages/Success';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/layout/Footer';
 
@@ -26,6 +28,8 @@ function App() {
               <Route path="/datasets" element={<Datasets />} />
               <Route path="/useful-links" element={<UsefulLinks />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/success" element={<Success />} />
               <Route
                 path="/profile"
                 element={

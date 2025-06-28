@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Menu, X, LineChart, Database, Calendar, Code, BookText, Sun, Moon, LogIn, LogOut, ChevronDown, Link, TrendingUp } from 'lucide-react';
+import { BookOpen, Menu, X, LineChart, Database, Calendar, Code, BookText, Sun, Moon, LogIn, LogOut, ChevronDown, Link, TrendingUp, CreditCard } from 'lucide-react';
 import Button from '../ui/Button';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSubscription } from '../../hooks/useSubscription';
 import AuthForm from '../auth/AuthForm';
 import Card from '../ui/Card';
 
@@ -76,6 +77,7 @@ const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
   const { user: authUser } = useAuth();
+  const { hasActiveSubscription, getSubscriptionPlan } = useSubscription();
 
   useEffect(() => {
     if (authUser) {
@@ -135,10 +137,16 @@ const Navbar: React.FC = () => {
               <NavLink href="/notebooks" icon={<Code size={18} />}>Notebooks</NavLink>
               <NavLink href="/consultation" icon={<Calendar size={18} />}>Consultation</NavLink>
               <NavLink href="/blog" icon={<BookText size={18} />}>Blog</NavLink>
+              <NavLink href="/pricing" icon={<CreditCard size={18} />}>Pricing</NavLink>
             </div>
           </div>
 
           <div className="hidden md:flex md:items-center md:space-x-4">
+            {user && hasActiveSubscription() && (
+              <div className="flex items-center px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                <span>{getSubscriptionPlan()}</span>
+              </div>
+            )}
             <button
               onClick={toggleTheme}
               className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 hover:scale-105"
@@ -206,9 +214,17 @@ const Navbar: React.FC = () => {
             <NavLink href="/notebooks" icon={<Code size={18} />} onClick={closeMenu}>Notebooks</NavLink>
             <NavLink href="/consultation" icon={<Calendar size={18} />} onClick={closeMenu}>Consultation</NavLink>
             <NavLink href="/blog" icon={<BookText size={18} />} onClick={closeMenu}>Blog</NavLink>
+            <NavLink href="/pricing" icon={<CreditCard size={18} />} onClick={closeMenu}>Pricing</NavLink>
           </div>
 
           <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+            {user && hasActiveSubscription() && (
+              <div className="px-4 mb-3">
+                <div className="flex items-center px-3 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-medium">
+                  <span>Active Plan: {getSubscriptionPlan()}</span>
+                </div>
+              </div>
+            )}
             <div className="flex items-center px-4">
               {user ? (
                 <Button

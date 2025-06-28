@@ -363,6 +363,7 @@ const Courses: React.FC = () => {
               <AuthForm
                 mode={authMode}
                 onToggleMode={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+                onSuccess={() => setShowAuthModal(false)}
               />
             </div>
           </Card>

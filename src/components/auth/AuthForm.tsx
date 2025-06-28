@@ -6,9 +6,10 @@ import { useAuth } from '../../contexts/AuthContext';
 interface AuthFormProps {
   mode: 'signin' | 'signup';
   onToggleMode: () => void;
+  onSuccess?: () => void;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode, onSuccess }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,16 +44,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onToggleMode }) => {
     try {
       if (mode === 'signin') {
         await signIn(email, password);
-        // Clear form after successful sign in
+        // Clear form and call success callback
         setEmail('');
         setPassword('');
+        onSuccess?.();
       } else {
         await signUp(username, email, password);
-        // Clear form after successful sign up
+        // Clear form and call success callback
         setUsername('');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
+        onSuccess?.();
         // Show success message or redirect
         setError('Check your email to confirm your account');
       }

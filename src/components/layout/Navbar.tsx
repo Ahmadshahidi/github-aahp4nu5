@@ -277,6 +277,7 @@ const Navbar: React.FC = () => {
               <AuthForm
                 mode={authMode}
                 onToggleMode={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+                onSuccess={() => setShowAuthForm(false)}
               />
             </div>
           </Card>

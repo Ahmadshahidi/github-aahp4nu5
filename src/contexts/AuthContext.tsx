@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Get initial session
@@ -34,8 +35,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      
+      // Handle navigation after sign in
+      if (event === 'SIGNED_IN' && session?.user) {
+        // If user signed in from navbar (not on courses page), go to profile
+        if (location.pathname !== '/courses') {
+          navigate('/profile?tab=courses');
+        }
+        // If on courses page, stay there (modal will be closed by the component)
+      }
     });
 
     return () => subscription.unsubscribe();

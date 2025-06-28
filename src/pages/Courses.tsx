@@ -5,6 +5,9 @@ import Button from '../components/ui/Button';
 import { useStripe } from '../hooks/useStripe';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../hooks/useSubscription';
+import AuthForm from '../components/auth/AuthForm';
+import Card from '../components/ui/Card';
+import { X } from 'lucide-react';
 
 interface CourseCardProps {
   title: string;
@@ -39,7 +42,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   const handleEnrollClick = () => {
     if (!user) {
-      alert('Please sign in to enroll in courses');
+      setAuthMode('signin');
+      setShowAuthModal(true);
       return;
     }
 
@@ -147,6 +151,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
 };
 
 const Courses: React.FC = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const courses = [
     {
       courseId: 'course-statistical-inference',
@@ -329,6 +335,31 @@ const Courses: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md shadow-2xl">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {authMode === 'signin' ? 'Sign In to Enroll' : 'Create Account'}
+                </h2>
+                <button
+                  onClick={() => setShowAuthModal(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <AuthForm
+                mode={authMode}
+                onToggleMode={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+              />
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

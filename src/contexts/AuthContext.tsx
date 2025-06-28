@@ -36,9 +36,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        navigate('/profile?tab=courses');
-      }
     });
 
     return () => subscription.unsubscribe();

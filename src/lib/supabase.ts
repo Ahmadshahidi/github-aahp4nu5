@@ -40,7 +40,21 @@ export type Tables = {
       last_edited_at: string;
     };
   };
+  stripe_subscriptions: {
+    Row: {
+      customer_id: string | null;
+      subscription_id: string | null;
+      subscription_status: string | null;
+      price_id: string | null;
+      current_period_start: number | null;
+      current_period_end: number | null;
+      cancel_at_period_end: boolean;
+      payment_method_brand: string | null;
+      payment_method_last4: string | null;
+    };
+  };
 };
 
 export type Profile = Tables['profiles']['Row'];
 export type ContentItem = Tables['content_items']['Row'];
+export type StripeSubscription = Tables['stripe_subscriptions']['Row'];

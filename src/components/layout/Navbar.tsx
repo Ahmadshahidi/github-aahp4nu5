@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BookOpen, Menu, X, LineChart, Database, Calendar, Code, BookText, Sun, Moon, LogIn, LogOut, ChevronDown, Link, TrendingUp, CreditCard, User } from 'lucide-react';
 import Button from '../ui/Button';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -15,15 +16,24 @@ interface NavLinkProps {
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ href, icon, children, onClick }) => {
+  const navigate = useNavigate();
+  
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onClick) {
+      onClick();
+    }
+    navigate(href);
+  };
+  
   return (
-    <a 
-      href={href} 
+    <button 
+      onClick={handleClick}
       className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 relative group"
-      onClick={onClick}
     >
       {icon}
       <span className="ml-2">{children}</span>
-    </a>
+    </button>
   );
 };
 
@@ -35,6 +45,7 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ label, icon, items }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="relative">
@@ -51,16 +62,18 @@ const Dropdown: React.FC<DropdownProps> = ({ label, icon, items }) => {
         <div className="absolute z-50 mt-2 w-56 rounded-xl shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="py-2" role="menu" aria-orientation="vertical">
             {items.map((item) => (
-              <a
+              <button
                 key={item.href}
-                href={item.href}
-                className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                onClick={() => {
+                  navigate(item.href);
+                  setIsOpen(false);
+                }}
+                className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 w-full text-left"
                 role="menuitem"
-                onClick={() => setIsOpen(false)}
               >
                 {item.icon}
                 <span className="ml-3">{item.label}</span>
-              </a>
+              </button>
             ))}
           </div>
         </div>
@@ -78,6 +91,7 @@ const Navbar: React.FC = () => {
   const { user, signOut } = useAuth();
   const { user: authUser } = useAuth();
   const { hasActiveSubscription, getSubscriptionPlan } = useSubscription();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (authUser) {
@@ -178,7 +192,7 @@ const Navbar: React.FC = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => window.location.href = '/profile?tab=courses'}
+                onClick={() => navigate('/profile?tab=courses')}
                 className="border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
               >
                 <User size={18} className="mr-2" />
@@ -236,7 +250,7 @@ const Navbar: React.FC = () => {
                     size="sm"
                     fullWidth
                     onClick={() => {
-                      window.location.href = '/profile?tab=courses';
+                      navigate('/profile?tab=courses');
                       closeMenu();
                     }}
                     className="border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"

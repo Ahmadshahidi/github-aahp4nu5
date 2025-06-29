@@ -70,7 +70,7 @@ const Pricing: React.FC = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16">
           {/* Course Purchase */}
           <Card className="relative hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white dark:bg-gray-800 border-0 shadow-lg">
             <CardContent className="p-8">
@@ -113,13 +113,13 @@ const Pricing: React.FC = () => {
 
           {/* Membership */}
           <Card className="relative hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-200 dark:border-purple-700 shadow-lg">
-            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-10">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
               <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold">
                 Most Popular
               </div>
             </div>
             
-            <CardContent className="p-8 pt-12">
+            <CardContent className="p-8">
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl mb-4">
                   <Crown className="w-8 h-8 text-white" />

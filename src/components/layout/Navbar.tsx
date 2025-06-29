@@ -121,11 +121,7 @@ const Navbar: React.FC = () => {
             </a>
             <div className="hidden md:ml-8 md:flex md:space-x-1">
               <NavLink href="/" icon={<LineChart size={18} />}>Home</NavLink>
-              {user ? (
-                <NavLink href="/profile?tab=courses" icon={<BookOpen size={18} />}>My Courses</NavLink>
-              ) : (
-                <NavLink href="/courses" icon={<BookOpen size={18} />}>Courses</NavLink>
-              )}
+              <NavLink href="/courses" icon={<BookOpen size={18} />}>Courses</NavLink>
               <Dropdown
                 label="Resources"
                 icon={<Database size={18} />}
@@ -178,6 +174,17 @@ const Navbar: React.FC = () => {
                 Sign In
               </Button>
             )}
+            {user && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.location.href = '/profile?tab=courses'}
+                className="border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              >
+                <User size={18} className="mr-2" />
+                My Profile
+              </Button>
+            )}
           </div>
 
           <div className="flex items-center md:hidden">
@@ -204,11 +211,7 @@ const Navbar: React.FC = () => {
         <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">
           <div className="pt-2 pb-3 space-y-1 px-4">
             <NavLink href="/" icon={<LineChart size={18} />} onClick={closeMenu}>Home</NavLink>
-            {user ? (
-              <NavLink href="/profile?tab=courses" icon={<BookOpen size={18} />} onClick={closeMenu}>My Courses</NavLink>
-            ) : (
-              <NavLink href="/courses" icon={<BookOpen size={18} />} onClick={closeMenu}>Courses</NavLink>
-            )}
+            <NavLink href="/courses" icon={<BookOpen size={18} />} onClick={closeMenu}>Courses</NavLink>
             <NavLink href="/datasets" icon={<Database size={18} />} onClick={closeMenu}>Datasets</NavLink>
             <NavLink href="/useful-links" icon={<Link size={18} />} onClick={closeMenu}>Useful Links</NavLink>
             <NavLink href="/notebooks" icon={<Code size={18} />} onClick={closeMenu}>Notebooks</NavLink>
@@ -227,16 +230,31 @@ const Navbar: React.FC = () => {
             )}
             <div className="flex items-center px-4">
               {user ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  fullWidth
-                  onClick={signOut}
-                  className="border-gray-300 dark:border-gray-600 hover:border-red-300 dark:hover:border-red-600 hover:text-red-600 dark:hover:text-red-400"
-                >
-                  <LogOut size={18} className="mr-2" />
-                  Sign Out
-                </Button>
+                <div className="space-y-2 w-full">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    fullWidth
+                    onClick={() => {
+                      window.location.href = '/profile?tab=courses';
+                      closeMenu();
+                    }}
+                    className="border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  >
+                    <User size={18} className="mr-2" />
+                    My Profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    fullWidth
+                    onClick={signOut}
+                    className="border-gray-300 dark:border-gray-600 hover:border-red-300 dark:hover:border-red-600 hover:text-red-600 dark:hover:text-red-400"
+                  >
+                    <LogOut size={18} className="mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
               ) : (
                 <Button
                   variant="primary"

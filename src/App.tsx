@@ -12,6 +12,8 @@ import Courses from './pages/Courses';
 import Home from './pages/Home';
 import Pricing from './pages/Pricing';
 import Success from './pages/Success';
+import Notebooks from './pages/Notebooks';
+import Consultation from './pages/Consultation';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/layout/Footer';
 
@@ -25,6 +27,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/courses" element={<Courses />} />
+              <Route path="/notebooks" element={<Notebooks />} />
+              <Route path="/consultation" element={<Consultation />} />
               <Route path="/datasets" element={<Datasets />} />
               <Route path="/useful-links" element={<UsefulLinks />} />
               <Route path="/blog" element={<Blog />} />

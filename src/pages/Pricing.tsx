@@ -73,28 +73,28 @@ const Pricing: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16">
           {/* Course Purchase */}
           <Card className="relative hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white dark:bg-gray-800 border-0 shadow-lg">
-            <CardContent className="p-8">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl mb-4">
-                  <Zap className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <CardContent className="p-6">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl mb-3">
+                  <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   Course Purchase
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
                   Pay per course
                 </p>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   $10
-                  <span className="text-lg font-normal text-gray-500 dark:text-gray-400">/course</span>
+                  <span className="text-base font-normal text-gray-500 dark:text-gray-400">/course</span>
                 </div>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3 mb-6">
                 {features.course.map((feature, index) => (
                   <li key={index} className="flex items-center">
-                    <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                    <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span className="text-gray-600 dark:text-gray-300 text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -104,7 +104,7 @@ const Pricing: React.FC = () => {
                 fullWidth
                 onClick={() => handlePurchase('course')}
                 disabled={loading}
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-gray-900 py-3 text-lg font-semibold"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-gray-900 py-2 text-base font-semibold"
               >
                 {loading ? 'Processing...' : 'Purchase Course'}
               </Button>
@@ -119,28 +119,28 @@ const Pricing: React.FC = () => {
               </div>
             </div>
             
-            <CardContent className="p-8">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl mb-4">
-                  <Crown className="w-8 h-8 text-white" />
+            <CardContent className="p-6">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl mb-3">
+                  <Crown className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   Membership
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
                   You get access to all courses
                 </p>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   $5
-                  <span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span>
+                  <span className="text-base font-normal text-gray-500 dark:text-gray-400">/month</span>
                 </div>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3 mb-6">
                 {features.membership.map((feature, index) => (
                   <li key={index} className="flex items-center">
-                    <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                    <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                    <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span className="text-gray-600 dark:text-gray-300 text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -150,7 +150,7 @@ const Pricing: React.FC = () => {
                 fullWidth
                 onClick={() => handlePurchase('membership')}
                 disabled={loading || (user && hasActiveSubscription())}
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 text-base font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
               >
                 {loading ? 'Processing...' : 
                  user && hasActiveSubscription() ? 'Current Plan' : 'Start Membership'}

@@ -12,6 +12,15 @@ const Pricing: React.FC = () => {
   const { user } = useAuth();
 
   const handlePurchase = (productKey: 'course' | 'membership') => {
+    if (!user) {
+      if (productKey === 'membership') {
+        alert('Please Sign In or if you don\'t have an account Sign Up for one');
+      } else {
+        alert('Please sign in to purchase this course');
+      }
+      return;
+    }
+    
     createCheckoutSession(productKey);
   };
 

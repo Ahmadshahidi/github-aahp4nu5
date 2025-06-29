@@ -10,13 +10,16 @@ const Pricing: React.FC = () => {
   const { createCheckoutSession, loading, error } = useStripe();
   const { hasActiveSubscription, getSubscriptionPlan } = useSubscription();
   const { user } = useAuth();
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const handlePurchase = (productKey: 'course' | 'membership') => {
+    setAuthError(null); // Clear any previous error
+    
     if (!user) {
       if (productKey === 'membership') {
-        alert('Please Sign In or if you don\'t have an account Sign Up for one');
+        setAuthError('Please Sign In or if you don\'t have an account Sign Up for one');
       } else {
-        alert('Please sign in to purchase this course');
+        setAuthError('Please sign in to purchase this course');
       }
       return;
     }
@@ -76,6 +79,12 @@ const Pricing: React.FC = () => {
         {error && (
           <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
             <p className="text-red-600 dark:text-red-400 text-center">{error}</p>
+          </div>
+        )}
+
+        {authError && (
+          <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-red-600 dark:text-red-400 text-center font-bold">{authError}</p>
           </div>
         )}
 

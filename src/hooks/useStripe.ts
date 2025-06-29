@@ -56,7 +56,7 @@ export const useStripe = () => {
       const { url } = await response.json();
       
       if (url) {
-        window.location.href = url;
+        window.open(url, '_blank', 'noopener,noreferrer');
       } else {
         throw new Error('No checkout URL received');
       }

@@ -113,7 +113,7 @@ const Pricing: React.FC = () => {
 
           {/* Membership */}
           <Card className="relative hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-200 dark:border-purple-700 shadow-lg">
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
               <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold">
                 Most Popular
               </div>

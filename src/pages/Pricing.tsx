@@ -17,7 +17,7 @@ const Pricing: React.FC = () => {
     
     if (!user) {
       if (productKey === 'membership') {
-        setAuthError('Please Sign In or if you don\'t have an account Sign Up for one');
+        setAuthError('Please Sign In to continue or if you don\'t have an account Sign Up for one');
       } else {
         setAuthError('Please sign in to purchase this course');
       }

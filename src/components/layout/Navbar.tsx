@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Menu, X, LineChart, Database, Calendar, Code, BookText, Sun, Moon, LogIn, LogOut, ChevronDown, Link, TrendingUp, CreditCard } from 'lucide-react';
+import { BookOpen, Menu, X, LineChart, Database, Calendar, Code, BookText, Sun, Moon, LogIn, LogOut, ChevronDown, Link, TrendingUp, CreditCard, User } from 'lucide-react';
 import Button from '../ui/Button';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';

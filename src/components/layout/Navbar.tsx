@@ -226,6 +226,7 @@ const Navbar: React.FC = () => {
           <div className="pt-2 pb-3 space-y-1 px-4">
             <NavLink href="/" icon={<LineChart size={18} />} onClick={closeMenu}>Home</NavLink>
             <NavLink href="/courses" icon={<BookOpen size={18} />} onClick={closeMenu}>Courses</NavLink>
+            <NavLink href="/learning" icon={<GraduationCap size={18} />} onClick={closeMenu}>Learning</NavLink>
             <NavLink href="/datasets" icon={<Database size={18} />} onClick={closeMenu}>Datasets</NavLink>
             <NavLink href="/useful-links" icon={<Link size={18} />} onClick={closeMenu}>Useful Links</NavLink>
             <NavLink href="/notebooks" icon={<Code size={18} />} onClick={closeMenu}>Notebooks</NavLink>

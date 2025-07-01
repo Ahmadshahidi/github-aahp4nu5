@@ -14,14 +14,18 @@ import Pricing from './pages/Pricing';
 import Success from './pages/Success';
 import Notebooks from './pages/Notebooks';
 import Consultation from './pages/Consultation';
+import LearningDashboard from './pages/LearningDashboard';
+import CoursePage from './pages/CoursePage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/layout/Footer';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <ThemeProvider>
+          <Toaster position="top-right" />
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <Routes>
@@ -34,6 +38,22 @@ function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/success" element={<Success />} />
+              <Route
+                path="/learning"
+                element={
+                  <ProtectedRoute>
+                    <LearningDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/learning/course/:courseId"
+                element={
+                  <ProtectedRoute>
+                    <CoursePage />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/profile"
                 element={

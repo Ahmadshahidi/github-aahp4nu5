@@ -1,0 +1,195 @@
+# Advanced Statistical Methods
+
+Welcome to advanced statistical analysis! This section covers sophisticated techniques used in modern data science and research.
+
+## Multivariate Analysis
+
+When dealing with multiple variables simultaneously, we need advanced techniques to understand relationships and patterns.
+
+### Multiple Linear Regression
+
+Extends simple linear regression to multiple predictors:
+
+**Model**: y = β₀ + β₁x₁ + β₂x₂ + ... + βₚxₚ + ε
+
+**Key Concepts**:
+- **Adjusted R²**: Accounts for the number of predictors
+- **Multicollinearity**: When predictors are highly correlated
+- **Variable Selection**: Choosing the best subset of predictors
+
+### Principal Component Analysis (PCA)
+
+Reduces dimensionality while preserving variance:
+
+**Applications**:
+- Data visualization
+- Noise reduction
+- Feature extraction
+- Compression
+
+**Steps**:
+1. Standardize the data
+2. Compute covariance matrix
+3. Find eigenvalues and eigenvectors
+4. Select principal components
+5. Transform the data
+
+## Advanced Hypothesis Testing
+
+### ANOVA (Analysis of Variance)
+
+Compares means across multiple groups:
+
+**One-Way ANOVA**: Tests if group means are equal
+- H₀: μ₁ = μ₂ = ... = μₖ
+- H₁: At least one mean is different
+
+**Two-Way ANOVA**: Tests effects of two factors
+- Main effects
+- Interaction effects
+
+### Non-Parametric Tests
+
+When data doesn't meet parametric assumptions:
+
+**Mann-Whitney U Test**: Non-parametric alternative to t-test
+**Kruskal-Wallis Test**: Non-parametric alternative to ANOVA
+**Chi-Square Test**: Tests independence of categorical variables
+
+## Regression Diagnostics
+
+### Assumptions of Linear Regression
+
+1. **Linearity**: Relationship between X and Y is linear
+2. **Independence**: Observations are independent
+3. **Homoscedasticity**: Constant variance of residuals
+4. **Normality**: Residuals are normally distributed
+
+### Diagnostic Plots
+
+**Residual Plots**: Check for patterns in residuals
+**Q-Q Plots**: Assess normality of residuals
+**Leverage Plots**: Identify influential observations
+**Cook's Distance**: Measure influence of individual points
+
+## Advanced Modeling Techniques
+
+### Logistic Regression
+
+For binary outcomes:
+
+**Model**: log(p/(1-p)) = β₀ + β₁x₁ + ... + βₚxₚ
+
+**Interpretation**:
+- Odds ratios
+- Predicted probabilities
+- Classification accuracy
+
+### Poisson Regression
+
+For count data:
+
+**Model**: log(λ) = β₀ + β₁x₁ + ... + βₚxₚ
+
+**Applications**:
+- Number of events in a time period
+- Rare disease occurrences
+- Website clicks
+
+### Survival Analysis
+
+Analyzes time-to-event data:
+
+**Kaplan-Meier Estimator**: Non-parametric survival curves
+**Cox Proportional Hazards**: Semi-parametric regression
+**Log-Rank Test**: Compares survival curves
+
+## Regularization Techniques
+
+### Ridge Regression (L2)
+
+Adds penalty term: λΣβᵢ²
+
+**Benefits**:
+- Reduces overfitting
+- Handles multicollinearity
+- Shrinks coefficients toward zero
+
+### Lasso Regression (L1)
+
+Adds penalty term: λΣ|βᵢ|
+
+**Benefits**:
+- Feature selection
+- Sparse solutions
+- Automatic variable selection
+
+### Elastic Net
+
+Combines Ridge and Lasso:
+- α controls mix of L1 and L2 penalties
+- Balances feature selection and grouping
+
+## Model Selection and Validation
+
+### Cross-Validation
+
+**k-Fold CV**: Divide data into k folds
+**Leave-One-Out CV**: Special case where k = n
+**Stratified CV**: Maintains class proportions
+
+### Information Criteria
+
+**AIC (Akaike Information Criterion)**:
+AIC = 2k - 2ln(L)
+
+**BIC (Bayesian Information Criterion)**:
+BIC = k·ln(n) - 2ln(L)
+
+Lower values indicate better models.
+
+## Practical Example: Customer Churn Analysis
+
+```python
+# Logistic regression for churn prediction
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+
+# Load and prepare data
+data = pd.read_csv('customer_data.csv')
+X = data[['tenure', 'monthly_charges', 'total_charges']]
+y = data['churn']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Fit model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Evaluate
+predictions = model.predict(X_test)
+print(classification_report(y_test, predictions))
+```
+
+## Key Takeaways
+
+1. **Choose appropriate methods** based on data type and research questions
+2. **Check assumptions** before applying statistical tests
+3. **Use regularization** to prevent overfitting
+4. **Validate models** using proper techniques
+5. **Interpret results** in context of the problem
+
+## Advanced Topics to Explore
+
+- Mixed-effects models
+- Structural equation modeling
+- Machine learning integration
+- Causal inference methods
+- Robust statistical methods
+
+---
+
+**Next**: Continue to "Time Series Analysis" to learn about analyzing temporal data patterns.

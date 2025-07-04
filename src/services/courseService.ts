@@ -42,17 +42,36 @@ export class CourseService {
 
   // Get MDX content from Supabase Storage
   static async getCourseContent(storagePath: string, fileName: string): Promise<string> {
-    const filePath = `${storagePath}/${fileName}`;
-    
-    const { data, error } = await supabase.storage
-      .from('courses')
-      .download(filePath);
-
-    if (error) {
-      throw new Error(`Failed to fetch course content: ${error.message}`);
+    // In development, try to load from local storage-samples first
+    if (import.meta.env.DEV) {
+      try {
+        const localPath = `/storage-samples/${storagePath}/${fileName}`;
+        const response = await fetch(localPath);
+        
+        if (response.ok) {
+          return await response.text();
+        }
+      } catch (localError) {
+        console.log('Local file not found, trying Supabase Storage...');
+      }
     }
 
-    return await data.text();
+    // Fallback to Supabase Storage
+    const filePath = `${storagePath}/${fileName}`;
+    
+    try {
+      const { data, error } = await supabase.storage
+        .from('courses')
+        .download(filePath);
+
+      if (error) {
+        throw new Error(`Failed to fetch course content: ${error.message}`);
+      }
+
+      return await data.text();
+    } catch (storageError) {
+      throw new Error(`Failed to load content from both local and remote sources: ${storageError}`);
+    }
   }
 
   // Mark section as completed

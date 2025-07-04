@@ -854,3 +854,5 @@ print(classification_report(y_test, predictions))
 };
 
 export default TestCourseRenderer;
+
+export default TestCourseRenderer

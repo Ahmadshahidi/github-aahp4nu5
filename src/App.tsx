@@ -17,6 +17,7 @@ import Consultation from './pages/Consultation';
 import LearningDashboard from './pages/LearningDashboard';
 import CoursePage from './pages/CoursePage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import TestCourseRenderer from './pages/TestCourseRenderer';
 import Footer from './components/layout/Footer';
 import { Toaster } from 'react-hot-toast';
 
@@ -32,6 +33,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/notebooks" element={<Notebooks />} />
+              <Route path="/test-course-renderer" element={<TestCourseRenderer />} />
               <Route path="/consultation" element={<Consultation />} />
               <Route path="/datasets" element={<Datasets />} />
               <Route path="/useful-links" element={<UsefulLinks />} />

@@ -46,7 +46,7 @@ export class CourseService {
     if (import.meta.env.DEV) {
       try {
         // Use the correct path structure based on our storage-samples directory
-        const localPath = `/storage-samples/${storagePath}/${fileName}`;
+        const localPath = `/storage-samples/courses/${storagePath}/${fileName}`;
         const response = await fetch(localPath);
         
         if (response.ok) {
@@ -57,12 +57,13 @@ export class CourseService {
             throw new Error('Got compiled module instead of raw content');
           }
           
+          console.log(`Successfully loaded content from: ${localPath}`);
           return content;
         }
         
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       } catch (localError) {
-        console.log('Local file not found or invalid, trying Supabase Storage...', localError);
+        console.warn('Local file not found or invalid, trying Supabase Storage...', localError);
       }
     }
 
@@ -70,6 +71,7 @@ export class CourseService {
     const filePath = `${storagePath}/${fileName}`;
     
     try {
+      console.log(`Attempting to load from Supabase Storage: ${filePath}`);
       const { data, error } = await supabase.storage
         .from('courses')
         .download(filePath);

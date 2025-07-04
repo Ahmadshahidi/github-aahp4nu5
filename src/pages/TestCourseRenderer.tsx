@@ -11,7 +11,7 @@ const TestCourseRenderer: React.FC = () => {
   const sampleSections: CourseSection[] = [
     {
       id: 'intro-stats-1',
-      course_id: 'intro-statistics',
+      course_id: 'intro-statistics', 
       title: 'What is Statistics?',
       file_name: 'intro.mdx',
       order_index: 1,
@@ -123,7 +123,7 @@ const TestCourseRenderer: React.FC = () => {
                           {section.title}
                         </h4>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {section.estimated_duration}
+                          {section.estimated_duration} • {section.course_id}
                         </p>
                       </div>
                     </div>
@@ -139,7 +139,7 @@ const TestCourseRenderer: React.FC = () => {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                 <CourseRenderer
                   section={selectedSection}
-                  storagePath={`courses/${selectedSection.course_id}`}
+                  storagePath={selectedSection.course_id}
                   onSectionComplete={handleSectionComplete}
                   className="p-8"
                 />

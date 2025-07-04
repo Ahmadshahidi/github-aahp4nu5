@@ -478,7 +478,7 @@ Analyzes time-to-event data:
     });
 
     if (error) {
-      throw new Error(`Failed to complete section: ${error.message}`);
+      throw new Error(\`Failed to complete section: ${error.message}`);
     }
 
     if (!data.success) {
@@ -567,5 +567,8 @@ Analyzes time-to-event data:
       ...course,
       category: course.course_categories?.name
     }));
+  }
+}
+    }
   }
 }

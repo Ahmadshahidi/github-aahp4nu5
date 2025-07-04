@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css'; // Import KaTeX CSS
 import { CourseService } from '../../services/courseService';
 import { CourseSection } from '../../models/Course';
 import { CheckCircle, Clock, Loader2 } from 'lucide-react';
@@ -151,7 +154,8 @@ const CourseRenderer: React.FC<CourseRendererProps> = ({
       {/* Course Content */}
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
           components={{
             // Custom components for better styling
             h1: ({ children }) => (

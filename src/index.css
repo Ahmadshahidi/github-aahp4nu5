@@ -23,3 +23,22 @@ h1, h2, h3, h4, h5, h6 {
 * {
   @apply transition-colors duration-200;
 }
+
+/* KaTeX math styling */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  margin: 1em 0;
+  text-align: center;
+}
+
+/* Dark mode adjustments for KaTeX */
+.dark .katex {
+  color: #e5e7eb;
+}
+
+.dark .katex .base {
+  color: #e5e7eb;
+}

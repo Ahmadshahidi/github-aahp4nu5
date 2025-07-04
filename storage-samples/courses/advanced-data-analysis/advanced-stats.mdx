@@ -10,8 +10,7 @@ When dealing with multiple variables simultaneously, we need advanced techniques
 
 Extends simple linear regression to multiple predictors:
 
-**Model**: y = β₀ + β₁x₁ + β₂x₂ + ... + βₚxₚ 
-$y=\beta_1x_1+\epsilon$ 
+**Model**: $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \ldots + \beta_px_p + \epsilon$
 
 **Key Concepts**:
 - **Adjusted R²**: Accounts for the number of predictors
@@ -42,8 +41,8 @@ Reduces dimensionality while preserving variance:
 Compares means across multiple groups:
 
 **One-Way ANOVA**: Tests if group means are equal
-- H₀: μ₁ = μ₂ = ... = μₖ
-- H₁: At least one mean is different
+- $H_0: \mu_1 = \mu_2 = \ldots = \mu_k$
+- $H_1$: At least one mean is different
 
 **Two-Way ANOVA**: Tests effects of two factors
 - Main effects
@@ -79,7 +78,7 @@ When data doesn't meet parametric assumptions:
 
 For binary outcomes:
 
-**Model**: log(p/(1-p)) = β₀ + β₁x₁ + ... + βₚxₚ
+**Model**: $\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p$
 
 **Interpretation**:
 - Odds ratios
@@ -90,7 +89,7 @@ For binary outcomes:
 
 For count data:
 
-**Model**: log(λ) = β₀ + β₁x₁ + ... + βₚxₚ
+**Model**: $\log(\lambda) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p$
 
 **Applications**:
 - Number of events in a time period
@@ -109,7 +108,7 @@ Analyzes time-to-event data:
 
 ### Ridge Regression (L2)
 
-Adds penalty term: λΣβᵢ²
+Adds penalty term: $\lambda\sum_{i=1}^p\beta_i^2$
 
 **Benefits**:
 - Reduces overfitting
@@ -118,7 +117,7 @@ Adds penalty term: λΣβᵢ²
 
 ### Lasso Regression (L1)
 
-Adds penalty term: λΣ|βᵢ|
+Adds penalty term: $\lambda\sum_{i=1}^p|\beta_i|$
 
 **Benefits**:
 - Feature selection
@@ -128,7 +127,7 @@ Adds penalty term: λΣ|βᵢ|
 ### Elastic Net
 
 Combines Ridge and Lasso:
-- α controls mix of L1 and L2 penalties
+- $\alpha$ controls mix of L1 and L2 penalties
 - Balances feature selection and grouping
 
 ## Model Selection and Validation
@@ -142,10 +141,10 @@ Combines Ridge and Lasso:
 ### Information Criteria
 
 **AIC (Akaike Information Criterion)**:
-AIC = 2k - 2ln(L)
+$$AIC = 2k - 2\ln(L)$$
 
 **BIC (Bayesian Information Criterion)**:
-BIC = k·ln(n) - 2ln(L)
+$$BIC = k \cdot \ln(n) - 2\ln(L)$$
 
 Lower values indicate better models.
 

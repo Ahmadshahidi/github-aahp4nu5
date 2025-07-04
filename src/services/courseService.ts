@@ -45,14 +45,24 @@ export class CourseService {
     // In development, try to load from local storage-samples first
     if (import.meta.env.DEV) {
       try {
+        // Use the correct path structure based on our storage-samples directory
         const localPath = `/storage-samples/${storagePath}/${fileName}`;
         const response = await fetch(localPath);
         
         if (response.ok) {
-          return await response.text();
+          const content = await response.text();
+          
+          // Check if we got a module export instead of raw content
+          if (content.includes('export default') && content.includes('sourceMappingURL')) {
+            throw new Error('Got compiled module instead of raw content');
+          }
+          
+          return content;
         }
+        
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       } catch (localError) {
-        console.log('Local file not found, trying Supabase Storage...');
+        console.log('Local file not found or invalid, trying Supabase Storage...', localError);
       }
     }
 
@@ -70,7 +80,7 @@ export class CourseService {
 
       return await data.text();
     } catch (storageError) {
-      throw new Error(`Failed to load content from both local and remote sources: ${storageError}`);
+      throw new Error(`Failed to load content: ${storageError instanceof Error ? storageError.message : 'Unknown error'}`);
     }
   }
 

@@ -174,7 +174,7 @@ const TestCourseRenderer: React.FC = () => {
             </li>
             <li className="flex items-start">
               <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-              Click "Mark Complete" to test the completion functionality
+              Click "Mark Complete\" to test the completion functionality
             </li>
             <li className="flex items-start">
               <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
